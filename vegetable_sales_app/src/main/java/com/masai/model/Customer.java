@@ -9,6 +9,7 @@ import javax.persistence.Id;
 import lombok.Getter;
 
 @Entity
+@Getter
 public class Customer {
 	
 	@Id
