@@ -39,12 +39,11 @@ public class Customer {
     private String confirmPassword;
     
     @OneToOne(cascade=CascadeType.ALL, mappedBy="customer")
-    
     private Cart cart;
     
     
     @OneToMany(cascade=CascadeType.ALL, mappedBy="customer")
-    private List<Order> orders=new ArrayList<>();
+    private List<Orders> orders=new ArrayList<>();
     
     
 

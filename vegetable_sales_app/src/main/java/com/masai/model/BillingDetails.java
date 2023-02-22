@@ -30,7 +30,7 @@ public class BillingDetails {
 	
 	@OneToOne(cascade=CascadeType.ALL)
 	@JoinColumn(name="orderId")
-	private Order order;
+	private Orders order;
 	
 	
 	

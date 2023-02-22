@@ -10,16 +10,20 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 
 @Entity
-public class Order {
+public class Orders {
 	
 	@Id
 	@GeneratedValue(strategy=GenerationType.AUTO)
 	private Integer orderNo;
+	
+	@OneToMany
 	private List<VegetableDTO> vegetableList=new ArrayList<>();
-	private Double totalAmount;
+	
+	private Integer totalAmount;
 	private String status;
 	
 	
@@ -30,6 +34,5 @@ public class Order {
 	
 	@OneToOne(cascade=CascadeType.ALL, mappedBy= "order")
 	private BillingDetails billingDetail;
-	
 
 }
