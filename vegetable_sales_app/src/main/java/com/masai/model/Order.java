@@ -9,35 +9,27 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
 
-
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
-
 @Entity
-
-
-
-@Data
-@NoArgsConstructor
-@AllArgsConstructor
-
-public class Cart {
+public class Order {
 	
 	@Id
 	@GeneratedValue(strategy=GenerationType.AUTO)
-	private Integer cartId;
+	private Integer orderNo;
+	private List<VegetableDTO> vegetableList=new ArrayList<>();
+	private Double totalAmount;
+	private String status;
 	
 	
-	private List<VegetableDTO> vegetableDto=new ArrayList<>();
-	
-	@OneToOne(cascade=CascadeType.ALL)
+	@ManyToOne(cascade=CascadeType.ALL)
 	@JoinColumn(name="customerId")
 	private Customer customer;
+	
+	
+	@OneToOne(cascade=CascadeType.ALL, mappedBy= "order")
+	private BillingDetails billingDetail;
+	
 
-    
-	
-	
 }
