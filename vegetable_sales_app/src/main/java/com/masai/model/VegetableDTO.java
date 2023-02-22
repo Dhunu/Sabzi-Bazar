@@ -1,6 +1,5 @@
 package com.masai.model;
 
-import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -14,9 +13,11 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 
-
+@Entity
 public class VegetableDTO {
 
+	@Id
+	@GeneratedValue(strategy=GenerationType.AUTO)
 	private Integer vegId;
 	
 
