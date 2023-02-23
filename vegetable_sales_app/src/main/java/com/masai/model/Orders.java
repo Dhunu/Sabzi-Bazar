@@ -34,5 +34,9 @@ public class Orders {
 	
 	@OneToOne(cascade=CascadeType.ALL, mappedBy= "order")
 	private BillingDetails billingDetail;
+	
+	
+	@OneToOne(cascade=CascadeType.ALL, mappedBy= "orders")
+	private Feedback feedback;
 
 }
