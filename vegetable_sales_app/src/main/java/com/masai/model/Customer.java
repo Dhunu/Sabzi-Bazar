@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import javax.persistence.CascadeType;
+import javax.persistence.Column;
 import javax.persistence.Embedded;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -34,7 +35,11 @@ public class Customer {
 	
 	@Embedded
 	private Address address;
+	
+	@Column(unique=true)
+	
     private String email;
+	
     private String password;
     private String confirmPassword;
     
@@ -45,6 +50,9 @@ public class Customer {
     @OneToMany(cascade=CascadeType.ALL, mappedBy="customer")
     private List<Orders> orders=new ArrayList<>();
     
+  
+    @OneToMany(cascade=CascadeType.ALL,mappedBy="customer")
+    private List<Feedback> feedbacks=new ArrayList<>();
     
 
 }
