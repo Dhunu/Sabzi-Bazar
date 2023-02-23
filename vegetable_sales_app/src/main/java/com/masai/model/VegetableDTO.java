@@ -1,6 +1,5 @@
 package com.masai.model;
 
-import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -15,18 +14,17 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 
 @Entity
-public class Admin {
+public class VegetableDTO {
 
 	@Id
 	@GeneratedValue(strategy=GenerationType.AUTO)
-	private Integer adminId;
+	private Integer vegId;
+	
+
 	private String name;
-	private String contactNumber;
 	
-	@Column(unique=true)
-	private String email;
-	private String password;
-	
-	
+	private String type;
+	private Double price;
+	private Integer quantity;
 	
 }
