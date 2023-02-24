@@ -4,10 +4,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.masai.exceptions.CustomerException;
-import com.masai.model.CurrentUserSession;
+import com.masai.model.CurrentCustomerUserSession;
 import com.masai.model.Customer;
 import com.masai.repository.CustomerDao;
-import com.masai.repository.SessionDao;
+import com.masai.repository.CustomerSessionDao;
 
 @Service
 public class CustomerServiceImpl implements CustomerService{
@@ -16,7 +16,7 @@ public class CustomerServiceImpl implements CustomerService{
 	private CustomerDao customerDao;
 	
 	@Autowired
-	private SessionDao sessionDao;
+	private CustomerSessionDao sessionDao;
 
 	@Override
 	public Customer getCustomerByEmail(String email) throws CustomerException {
@@ -40,10 +40,20 @@ public class CustomerServiceImpl implements CustomerService{
 		
 		if(c!=null)
 		{
-			throw new CustomerException("Customer already Exist");
+			throw new CustomerException("Customer already Exist with this email");
 		}
 		
-		return customerDao.save(customer);
+		if(customer.getPassword().equals(customer.getConfirmPassword()))
+		{
+			return customerDao.save(customer);
+		}
+		else
+		{
+			throw new CustomerException("Password and Confirm Password did not matched");
+		}
+		
+		
+		
 		
 	}
 
@@ -58,7 +68,7 @@ public class CustomerServiceImpl implements CustomerService{
 			throw new CustomerException("Please enter a valid email id");
 		}
 		
-		  CurrentUserSession cus= sessionDao.findByUuid(key);
+		  CurrentCustomerUserSession cus= sessionDao.findByUuid(key);
 		  
 		  if(cus==null)
 		  {

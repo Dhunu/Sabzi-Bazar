@@ -8,13 +8,15 @@ import org.springframework.stereotype.Service;
 
 import com.masai.exceptions.LoginException;
 import com.masai.model.Admin;
-import com.masai.model.CurrentUserSession;
+import com.masai.model.CurrentAdminUserSession;
+import com.masai.model.CurrentCustomerUserSession;
 import com.masai.model.Customer;
 import com.masai.model.Role;
 import com.masai.model.User;
 import com.masai.repository.AdminDao;
+import com.masai.repository.AdminSessionDao;
 import com.masai.repository.CustomerDao;
-import com.masai.repository.SessionDao;
+import com.masai.repository.CustomerSessionDao;
 
 import net.bytebuddy.utility.RandomString;
 
@@ -28,7 +30,11 @@ public class LoginServiceImpl implements LoginService{
 	private AdminDao adminDao;
 	
 	@Autowired
-	private SessionDao sessionDao;
+	private CustomerSessionDao customerSessionDao;
+	
+	
+	@Autowired
+	private AdminSessionDao adminSessionDao;
 	
 	@Override
 	public String loginIntoAccount(User user) throws LoginException {
@@ -44,17 +50,17 @@ public class LoginServiceImpl implements LoginService{
 			}
 			else
 			{
-				Optional<CurrentUserSession> op=sessionDao.findById(existingAdmin.getAdminId());
+				Optional<CurrentAdminUserSession> op=adminSessionDao.findById(existingAdmin.getAdminId());
 				
 				if(op.isPresent())
 				{
-					throw new LoginException("you are already Logged In");
+					throw new LoginException("you are already Logged In as an admin");
 				}
 				
 				
-					if(existingAdmin.getPassword()==user.getPassword())
+					if(existingAdmin.getPassword().equals(user.getPassword()))
 					{
-						CurrentUserSession current=new CurrentUserSession();
+						CurrentAdminUserSession current=new CurrentAdminUserSession();
 						
 						current.setLocalDateTime(LocalDateTime.now());
 						
@@ -63,7 +69,7 @@ public class LoginServiceImpl implements LoginService{
 						current.setUuid(key);
 						current.setUserId(existingAdmin.getAdminId());
 						
-						sessionDao.save(current);
+						adminSessionDao.save(current);
 						
 						return current.toString();
 						
@@ -89,18 +95,18 @@ public class LoginServiceImpl implements LoginService{
 		}
 		else
 		{
-			Optional<CurrentUserSession> op=sessionDao.findById(existingCustomer.getCustomerId());
+			Optional<CurrentCustomerUserSession> op=customerSessionDao.findById(existingCustomer.getCustomerId());
 			
 			if(op.isPresent())
 			{
-				throw new LoginException("you are already Logged In");
+				throw new LoginException("you are already Logged In as an customer");
 			}
 			
 			
 			
-				if(existingCustomer.getPassword()==user.getPassword())
+				if(existingCustomer.getPassword().equals(user.getPassword()))
 				{
-					CurrentUserSession current=new CurrentUserSession();
+					CurrentCustomerUserSession current=new CurrentCustomerUserSession();
 					
 					
 					
@@ -110,7 +116,7 @@ public class LoginServiceImpl implements LoginService{
 					current.setUuid(key);
 					current.setUserId(existingCustomer.getCustomerId());
 					
-					sessionDao.save(current);
+					customerSessionDao.save(current);
 					
 					return current.toString();
 					
@@ -139,19 +145,53 @@ public class LoginServiceImpl implements LoginService{
 	}
 
 	@Override
-	public String logoutFromAccount(String key) throws LoginException {
+	public String logoutFromAccount(String key, String type) throws LoginException {
 		
-		CurrentUserSession current=sessionDao.findByUuid(key);
 		
-		if(current==null)
+		if(type.equals("ADMIN"))
 		{
+			
+			CurrentAdminUserSession current=adminSessionDao.findByUuid(key);
+			
+			if(current!=null)
+			{
+				
+				adminSessionDao.delete(current);
+				return "Logged Out!";
+				
+			}
+			
 			throw new LoginException("No user is loggedIn with this key");
+			
+			
+		
+			
+			
+		}
+		else if(type.equals("CUSTOMER"))
+		{
+			
+			CurrentCustomerUserSession current=customerSessionDao.findByUuid(key);
+			
+			if(current!=null)
+			{
+				
+				customerSessionDao.delete(current);
+				
+				
+				return "Logged Out!";	
+				
+			}
+			
+			throw new LoginException("No user is loggedIn with this key");			
+			
+			
 		}
 		
-		sessionDao.delete(current);
+			throw new LoginException("Please enter a valid user type");
 		
 		
-		return"Logged Out!";
+	
 		
 		
 		
