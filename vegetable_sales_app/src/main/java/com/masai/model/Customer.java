@@ -17,14 +17,14 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-@Entity
-@Getter
+
+
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
 
 
-
+@Entity
 public class Customer {
 	
 	@Id
