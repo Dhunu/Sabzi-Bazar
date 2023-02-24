@@ -16,14 +16,15 @@ import lombok.ToString;
 @AllArgsConstructor
 @ToString
 @Entity
-public class CurrentUserSession {
+public class CurrentCustomerUserSession {
 	
-	@Id
+    @Id
 	private Integer userId;
 	
 	@Column(unique=true)
 	private String uuid;
 	
 	private LocalDateTime localDateTime;
+	
 
 }

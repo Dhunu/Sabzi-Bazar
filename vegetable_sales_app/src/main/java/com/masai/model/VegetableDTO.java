@@ -1,5 +1,6 @@
 package com.masai.model;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -20,7 +21,7 @@ public class VegetableDTO {
 	@GeneratedValue(strategy=GenerationType.AUTO)
 	private Integer vegId;
 	
-
+    @Column(unique=true)
 	private String name;
 	
 	private String type;
