@@ -40,6 +40,20 @@ public class GlobalExceptionHandler {
 		return new ResponseEntity<>(err,HttpStatus.BAD_REQUEST);
 		
 		
+	}
+	
+	@ExceptionHandler(OrderException.class)
+	public ResponseEntity<MyErrorDetails> myExpHandle(OrderException oe,WebRequest wr) {
+		
+		MyErrorDetails err=new MyErrorDetails();
+		err.setTimestamp(LocalDateTime.now());
+		err.setMessage(oe.getMessage());
+		err.setDetails(wr.getDescription(false));
+		
+		
+		return new ResponseEntity<>(err,HttpStatus.BAD_REQUEST);
+		
+		
 	}	
 	
 	

@@ -13,6 +13,8 @@ import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.Getter;
@@ -43,14 +45,15 @@ public class Customer {
     private String password;
     private String confirmPassword;
     
+    @JsonIgnore
     @OneToOne(cascade=CascadeType.ALL, mappedBy="customer")
     private Cart cart;
     
-    
+    @JsonIgnore
     @OneToMany(cascade=CascadeType.ALL, mappedBy="customer")
     private List<Orders> orders=new ArrayList<>();
     
-  
+    @JsonIgnore
     @OneToMany(cascade=CascadeType.ALL,mappedBy="customer")
     private List<Feedback> feedbacks=new ArrayList<>();
     
