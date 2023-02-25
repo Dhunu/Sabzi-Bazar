@@ -1,11 +1,15 @@
 package com.masai.service;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.masai.exceptions.CustomerException;
+import com.masai.model.CurrentAdminUserSession;
 import com.masai.model.CurrentCustomerUserSession;
 import com.masai.model.Customer;
+import com.masai.repository.AdminSessionDao;
 import com.masai.repository.CustomerDao;
 import com.masai.repository.CustomerSessionDao;
 
@@ -16,7 +20,10 @@ public class CustomerServiceImpl implements CustomerService{
 	private CustomerDao customerDao;
 	
 	@Autowired
-	private CustomerSessionDao sessionDao;
+	private CustomerSessionDao customerSessionDao;
+	
+	@Autowired
+	private AdminSessionDao adminSessionDao;
 
 	@Override
 	public Customer getCustomerByEmail(String email) throws CustomerException {
@@ -34,7 +41,7 @@ public class CustomerServiceImpl implements CustomerService{
 	}
 
 	@Override
-	public Customer createCustomer(Customer customer) throws CustomerException {
+	public Customer addCustomer(Customer customer) throws CustomerException {
 		
 		Customer c=customerDao.findByEmail(customer.getEmail());
 		
@@ -68,16 +75,90 @@ public class CustomerServiceImpl implements CustomerService{
 			throw new CustomerException("Please enter a valid email id");
 		}
 		
-		  CurrentCustomerUserSession cus= sessionDao.findByUuid(key);
+		  CurrentCustomerUserSession cus= customerSessionDao.findByUuid(key);
 		  
 		  if(cus==null)
 		  {
-			  throw new CustomerException("Please login first");
+			  throw new CustomerException("Please login first as an customer");
 		  }
 		  
 		  Customer ct=customerDao.save(customer);
 		  
 		return ct;
+	}
+
+	@Override
+	public String removeCustomer(String email, String key) throws CustomerException {
+	
+		
+		  CurrentAdminUserSession aus= adminSessionDao.findByUuid(key);
+		  
+		  if(aus==null)
+		  {
+			  throw new CustomerException("No Admin Found With This Key");  
+		  }
+		  
+		  
+		  Customer c=customerDao.findByEmail(email);
+			
+			if(c==null)
+			{
+				throw new CustomerException("Customer does not exist");
+			}
+		  
+		  
+		   customerDao.delete(c);
+		   
+		   return "Deleted....";
+		
+		
+		
+		
+	}
+
+	@Override
+	public Customer viewCustomer(String email, String key) throws CustomerException {
+	
+		
+           CurrentAdminUserSession aus= adminSessionDao.findByUuid(key);
+		  
+		  if(aus==null)
+		  {
+			  throw new CustomerException("No Admin Found With This Key");  
+		  }
+		  
+		  
+		  Customer c=customerDao.findByEmail(email);
+			
+			if(c==null)
+			{
+				throw new CustomerException("Customer does not exist");
+			}
+			
+			
+			return  c;
+		  
+		
+		
+	}
+
+	@Override
+	public List<Customer> viewCustomerList(String key) throws CustomerException {
+	
+		 CurrentAdminUserSession aus= adminSessionDao.findByUuid(key);
+		  
+		  if(aus==null)
+		  {
+			  throw new CustomerException("No Admin Found With This Key");  
+		  }
+		  
+		    List<Customer> arr=customerDao.findAll();
+		  
+		    
+		    return arr;
+		    
+		
+		
 	}
 	
 
