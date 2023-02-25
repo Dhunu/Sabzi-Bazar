@@ -13,7 +13,18 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+
 @Entity
+@Getter
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor
 public class Orders {
 	
 	@Id
@@ -29,14 +40,17 @@ public class Orders {
 	
 	@ManyToOne(cascade=CascadeType.ALL)
 	@JoinColumn(name="customerId")
+	@JsonIgnore
 	private Customer customer;
 	
 	
 	@OneToOne(cascade=CascadeType.ALL, mappedBy= "order")
+	@JsonIgnore
 	private BillingDetails billingDetail;
 	
 	
 	@OneToOne(cascade=CascadeType.ALL, mappedBy= "orders")
+	@JsonIgnore
 	private Feedback feedback;
 
 }
