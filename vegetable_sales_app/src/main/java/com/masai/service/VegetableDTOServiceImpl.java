@@ -10,10 +10,10 @@ import org.springframework.stereotype.Service;
 import com.masai.exceptions.CustomerException;
 import com.masai.exceptions.VegetableException;
 import com.masai.model.Admin;
-import com.masai.model.CurrentUserSession;
+import com.masai.model.CurrentAdminUserSession;
 import com.masai.model.VegetableDTO;
 import com.masai.repository.AdminDao;
-import com.masai.repository.SessionDao;
+import com.masai.repository.AdminSessionDao;
 import com.masai.repository.VegetableDTODao;
 
 @Service
@@ -23,7 +23,7 @@ public class VegetableDTOServiceImpl implements VegetableDTOService{
 	private VegetableDTODao vegetableDTODao;
 	
 	@Autowired
-	private SessionDao sessionDao;
+	private AdminSessionDao adminSessionDao;
 	
 	@Autowired
 	private AdminDao adminDao;
@@ -32,7 +32,7 @@ public class VegetableDTOServiceImpl implements VegetableDTOService{
 	public VegetableDTO addVegetable(VegetableDTO vegetableDTO, String key) throws VegetableException, CustomerException {
 		
 		
-		CurrentUserSession cus= sessionDao.findByUuid(key);
+		CurrentAdminUserSession cus= adminSessionDao.findByUuid(key);
 		
 		  
 		if(cus==null){
@@ -60,7 +60,7 @@ public class VegetableDTOServiceImpl implements VegetableDTOService{
 	public VegetableDTO updateVegetable(VegetableDTO vegetableDTO, String key) throws VegetableException, CustomerException {
 		// TODO Auto-generated method stub
 		
-		CurrentUserSession cus= sessionDao.findByUuid(key);
+		CurrentAdminUserSession cus= adminSessionDao.findByUuid(key);
 		
 		  
 		if(cus==null){
@@ -87,7 +87,7 @@ public class VegetableDTOServiceImpl implements VegetableDTOService{
 	public VegetableDTO removeVegetable(VegetableDTO vegetableDTO, String key) throws VegetableException, CustomerException {
 		// TODO Auto-generated method stub
 		
-		CurrentUserSession cus= sessionDao.findByUuid(key);
+		CurrentAdminUserSession cus= adminSessionDao.findByUuid(key);
 		
 		  
 		if(cus==null){
@@ -114,7 +114,7 @@ public class VegetableDTOServiceImpl implements VegetableDTOService{
 	@Override
 	public List<VegetableDTO> viewAllVegetable(String key) throws VegetableException, CustomerException {
 		// TODO Auto-generated method stub
-		CurrentUserSession cus= sessionDao.findByUuid(key);
+		CurrentAdminUserSession cus= adminSessionDao.findByUuid(key);
 		
 		  
 		if(cus==null){
@@ -141,7 +141,7 @@ public class VegetableDTOServiceImpl implements VegetableDTOService{
 	@Override
 	public List<VegetableDTO> viewAllVegetableByCategory(String category, String key) throws VegetableException, CustomerException {
 		// TODO Auto-generated method stub
-		CurrentUserSession cus= sessionDao.findByUuid(key);
+		CurrentAdminUserSession cus= adminSessionDao.findByUuid(key);
 		
 		  
 		if(cus==null){
@@ -169,7 +169,7 @@ public class VegetableDTOServiceImpl implements VegetableDTOService{
 	public List<VegetableDTO> viewAllVegetableByName(String name, String key) throws VegetableException, CustomerException {
 		// TODO Auto-generated method stub
 		
-		CurrentUserSession cus= sessionDao.findByUuid(key);
+		CurrentAdminUserSession cus= adminSessionDao.findByUuid(key);
 		  
 		if(cus==null){
 			  throw new CustomerException("Please login first");

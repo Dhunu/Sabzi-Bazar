@@ -1,21 +1,17 @@
 package com.masai.service;
 
 import java.util.List;
-import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.masai.exceptions.CustomerException;
 import com.masai.exceptions.FeedbackException;
-import com.masai.model.CurrentUserSession;
-import com.masai.model.Customer;
 import com.masai.model.Feedback;
-import com.masai.model.Orders;
 import com.masai.repository.CustomerDao;
+import com.masai.repository.CustomerSessionDao;
 import com.masai.repository.FeedbackDao;
 import com.masai.repository.OrdersDao;
-import com.masai.repository.SessionDao;
 
 @Service
 public class FeedbackServiceImpl implements FeedbackService {
@@ -24,7 +20,7 @@ public class FeedbackServiceImpl implements FeedbackService {
 	private CustomerDao customerDao;
 	
 	@Autowired
-	private SessionDao sessionDao;
+	private CustomerSessionDao customerSessionDao;
 
 	@Autowired
 	private FeedbackDao feedbackDao;
