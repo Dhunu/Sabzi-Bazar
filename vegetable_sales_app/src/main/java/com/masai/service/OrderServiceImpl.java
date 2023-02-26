@@ -9,10 +9,12 @@ import org.springframework.stereotype.Service;
 
 import com.masai.exceptions.CustomerException;
 import com.masai.exceptions.OrderException;
+import com.masai.model.Cart;
 import com.masai.model.CurrentAdminUserSession;
 import com.masai.model.CurrentCustomerUserSession;
 import com.masai.model.Customer;
 import com.masai.model.Orders;
+import com.masai.model.VegetableDTO;
 import com.masai.repository.AdminSessionDao;
 import com.masai.repository.CustomerDao;
 import com.masai.repository.CustomerSessionDao;
@@ -49,29 +51,52 @@ public class OrderServiceImpl implements OrderService{
 		
 		order.setCustomer(customer);
 		
+		Cart cart = new Cart();
+		
+		if(cart.getVegetableDto().isEmpty()) {
+			throw new OrderException("Please first add vegetable into the cart");
+		}
+		
+		List<VegetableDTO> vegetableDTOs = cart.getVegetableDto();
+		
+		order.setVegetableList(vegetableDTOs);
+		
+		int totalamount = 0;
+		
+		for(VegetableDTO dto : vegetableDTOs) {
+			
+			totalamount += dto.getPrice();
+			
+		}
+		
+		order.setTotalAmount(totalamount);
+		
+		order.setStatus("Processing");
+		
 		return ordersDao.save(order);
 		
 	}
 
 	@Override
-	public Orders viewOrder(Orders order, String key) throws OrderException {
+	public Orders viewOrder(Integer orderId, String key) throws OrderException {
 		CurrentCustomerUserSession userSession = customerSessionDao.findByUuid(key);
 		
 		if(userSession == null) {
 			throw new OrderException("Please login first");
 		}
 		
+		Optional<Orders> opt = ordersDao.findById(orderId);
 		
-		return null;
+		return opt.get() ;
 	}
 
 	@Override
 	public Orders updateOrderDetails(Orders order, String key) throws OrderException{
 		
-		CurrentCustomerUserSession userSession = customerSessionDao.findByUuid(key);
+		CurrentAdminUserSession userSession = adminSessionDao.findByUuid(key);
 		
 		if(userSession == null) {
-			throw new OrderException("Please login first");
+			throw new OrderException("Please login first as Admin");
 		}
 		
 		return ordersDao.save(order);
@@ -82,28 +107,64 @@ public class OrderServiceImpl implements OrderService{
 		
 		CurrentAdminUserSession userSession = adminSessionDao.findByUuid(key);
 		
+		if(userSession == null) {
+			throw new OrderException("Please login first as Admin");
+		}
 		
+		List<Orders> list = ordersDao.viewAllOrderByCustomerid(customerId); 
 		
-		
-		return null;
+		return list;
 	}
 
 	@Override
 	public List<Orders> viewAllOrdersByDate(LocalDate date, String key) throws OrderException {
-		// TODO Auto-generated method stub
+		
+//		CurrentAdminUserSession userSession = adminSessionDao.findByUuid(key);
+//		
+//		if(userSession == null) {
+//			throw new OrderException("Please login first as Admin");
+//		}
+//		
+//		List<Orders> list = ordersDao.viewAllOrderByDate(date); 
+		
 		return null;
 	}
 
 	@Override
 	public List<Orders> viewOrderList(String key) throws OrderException {
-		// TODO Auto-generated method stub
-		return null;
+		
+		CurrentAdminUserSession userSession = adminSessionDao.findByUuid(key);
+		
+		if(userSession == null) {
+			throw new OrderException("Please login first as Admin");
+		}
+		
+		List<Orders> list = ordersDao.findAll();
+		
+		return list;
 	}
 
 	@Override
 	public Orders cancelOrder(Integer orderId, String key) throws OrderException {
-		// TODO Auto-generated method stub
-		return null;
+		
+		CurrentCustomerUserSession userSession = customerSessionDao.findByUuid(key);
+		
+		if(userSession == null) {
+			throw new OrderException("Please login first");
+		}
+		
+		Optional<Orders> opt = ordersDao.findById(orderId);
+		
+		if(!opt.isPresent()) {
+			throw new OrderException("Order not found");
+		}
+		
+		Orders order = opt.get();
+		
+		order.setStatus("Cancel");
+		
+		return order;
+		
 	}
 
 }

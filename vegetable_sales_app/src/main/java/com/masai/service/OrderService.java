@@ -15,7 +15,7 @@ public interface OrderService {
 	
 	public Orders addOrder(Orders order,String key) throws OrderException;
 	
-	public Orders viewOrder(Orders order,String key) throws OrderException;
+	public Orders viewOrder(Integer orderId,String key) throws OrderException;
 	
 	public Orders updateOrderDetails(Orders order,String key) throws OrderException;
 	
