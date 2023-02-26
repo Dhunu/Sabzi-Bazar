@@ -8,6 +8,8 @@ import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -15,7 +17,6 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-
 @Entity
 public class Feedback {
 	
@@ -25,10 +26,13 @@ public class Feedback {
 	private Integer rating;
 	private String comments;
 	
+	@JsonIgnore
 	@ManyToOne(cascade=CascadeType.ALL)
 	private Customer customer;
 	
 	@OneToOne(cascade=CascadeType.ALL)
 	private Orders orders;
+    
+    
 
 }

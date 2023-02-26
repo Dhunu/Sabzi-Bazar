@@ -17,7 +17,6 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
-import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 
@@ -33,12 +32,14 @@ public class Customer {
 	@GeneratedValue(strategy=GenerationType.AUTO)
 	private Integer customerId;
 	private String customerName;
+	
 	private String mobileNumber;
 	
 	@Embedded
 	private Address address;
 	
 	@Column(unique=true)
+	
 	
     private String email;
 	

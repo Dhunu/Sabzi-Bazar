@@ -12,4 +12,6 @@ public interface VegetableDTODao extends JpaRepository<VegetableDTO, Integer>{
 	
 	public List<VegetableDTO> findByType(String type);
 	
+	public VegetableDTO findByNameAndType(String name, String type);
+	
 }

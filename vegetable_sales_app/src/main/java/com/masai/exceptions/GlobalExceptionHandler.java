@@ -13,6 +13,37 @@ import org.springframework.web.context.request.WebRequest;
 public class GlobalExceptionHandler {
 	
 	
+	@ExceptionHandler(BillingDetailsException.class)
+	public ResponseEntity<MyErrorDetails> myExpHandle(BillingDetailsException le,WebRequest wr) {
+		
+		MyErrorDetails err=new MyErrorDetails();
+		err.setTimestamp(LocalDateTime.now());
+		err.setMessage(le.getMessage());
+		err.setDetails(wr.getDescription(false));
+		
+		
+		return new ResponseEntity<>(err,HttpStatus.BAD_REQUEST);
+		
+		
+	}
+	
+	
+	@ExceptionHandler(CartException.class)
+	public ResponseEntity<MyErrorDetails> myExpHandle(CartException le,WebRequest wr) {
+		
+		MyErrorDetails err=new MyErrorDetails();
+		err.setTimestamp(LocalDateTime.now());
+		err.setMessage(le.getMessage());
+		err.setDetails(wr.getDescription(false));
+		
+		
+		return new ResponseEntity<>(err,HttpStatus.BAD_REQUEST);
+		
+		
+	}
+	
+	
+	
 	@ExceptionHandler(LoginException.class)
 	public ResponseEntity<MyErrorDetails> myExpHandle(LoginException le,WebRequest wr) {
 		

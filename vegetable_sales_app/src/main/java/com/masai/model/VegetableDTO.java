@@ -22,7 +22,6 @@ public class VegetableDTO {
 	
    
 	private String name;
-	
 	private String type;
 	private Double price;
 	private Integer quantity;

@@ -1,28 +1,30 @@
 package com.masai.model;
 
-import java.util.ArrayList;
-import java.util.List;
+
+import java.util.HashSet;
+import java.util.Set;
 
 import javax.persistence.CascadeType;
+import javax.persistence.ElementCollection;
+import javax.persistence.Embedded;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import lombok.AllArgsConstructor;
-import lombok.Data;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 @Entity
-@Data
+@Getter
+@Setter
 @NoArgsConstructor
 @AllArgsConstructor
 public class Orders {
@@ -31,10 +33,11 @@ public class Orders {
 	@GeneratedValue(strategy=GenerationType.AUTO)
 	private Integer orderNo;
 	
-	@OneToMany
-	private List<VegetableDTO> vegetableList=new ArrayList<>();
+	@ElementCollection
+	@Embedded
+	private Set<DemandingVegetableDTO> demandingVegetableDto=new HashSet<>();
 	
-	private Integer totalAmount;
+	private Double totalAmount;
 	private String status;
 	
 	

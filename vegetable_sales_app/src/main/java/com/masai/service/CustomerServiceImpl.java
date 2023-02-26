@@ -5,11 +5,14 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+
 import com.masai.exceptions.CustomerException;
+import com.masai.model.Cart;
 import com.masai.model.CurrentAdminUserSession;
 import com.masai.model.CurrentCustomerUserSession;
 import com.masai.model.Customer;
 import com.masai.repository.AdminSessionDao;
+import com.masai.repository.CartDao;
 import com.masai.repository.CustomerDao;
 import com.masai.repository.CustomerSessionDao;
 
@@ -24,6 +27,9 @@ public class CustomerServiceImpl implements CustomerService{
 	
 	@Autowired
 	private AdminSessionDao adminSessionDao;
+	
+	@Autowired
+	private CartDao cartDao;
 
 	@Override
 	public Customer getCustomerByEmail(String email) throws CustomerException {
@@ -52,7 +58,17 @@ public class CustomerServiceImpl implements CustomerService{
 		
 		if(customer.getPassword().equals(customer.getConfirmPassword()))
 		{
-			return customerDao.save(customer);
+			
+			
+			Customer new_customer=customerDao.save(customer);
+			
+			Cart cr=new Cart();
+			cr.setCustomer(new_customer);
+			new_customer.setCart(cr);
+			
+			cartDao.save(cr);
+			
+			return new_customer;
 		}
 		else
 		{
@@ -60,9 +76,12 @@ public class CustomerServiceImpl implements CustomerService{
 		}
 		
 		
-		
-		
 	}
+	
+	
+	
+	
+	
 
 	@Override
 	public Customer updateCustomer(Customer customer, String key) throws CustomerException {

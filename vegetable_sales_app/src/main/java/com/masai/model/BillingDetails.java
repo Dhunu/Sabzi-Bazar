@@ -13,17 +13,29 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.OneToOne;
 
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+import lombok.ToString;
+
+
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
+@ToString
 @Entity
 public class BillingDetails {
 
 	@Id
 	@GeneratedValue(strategy=GenerationType.AUTO)
 	private Integer billingId;
-	private String transactionMode;
-	private LocalDateTime transactionDate;
 	
 	@Enumerated(EnumType.STRING)
-	private TransactionMode transactionStatus;
+	private TransactionMode transactionMode;
+	private LocalDateTime transactionDate;
+	
+	
+	private String transactionStatus;
 	
 	@Embedded
 	private Address billingAddress;

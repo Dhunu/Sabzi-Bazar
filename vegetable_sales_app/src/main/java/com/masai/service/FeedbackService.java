@@ -10,7 +10,7 @@ public interface FeedbackService {
 
 	public Feedback addFeedBack(Feedback feedback, String key, Integer orderId) throws FeedbackException, CustomerException;
 	
-	public List<Feedback> viewAllFeedBack(int vegetableId)throws FeedbackException;
+	public Feedback viewAllFeedBack(Integer orderId,String key)throws FeedbackException;
 	
-	public Feedback viewFeedBack(Integer customerId) throws FeedbackException,CustomerException;
+	public List<Feedback> viewFeedBack(Integer customerId,String key) throws FeedbackException,CustomerException;
 }
