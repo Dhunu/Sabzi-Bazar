@@ -102,7 +102,7 @@ public class VegetableDTOServiceImpl implements VegetableDTOService{
 		
 		List<VegetableDTO> v = vegetableDTODao.findByName(vegetableDTO.getName());
 		
-		if(v==null) {
+		if(v.isEmpty()) {
 			throw new VegetableException("Vegetable doesnot exist");
 		}
 		
@@ -131,7 +131,7 @@ public class VegetableDTOServiceImpl implements VegetableDTOService{
 		
 		vegetables = vegetableDTODao.findAll();
 		
-		if(vegetables==null) {
+		if(vegetables.isEmpty()) {
 			throw new VegetableException("No vegetables in database");
 		}
 		
@@ -158,7 +158,7 @@ public class VegetableDTOServiceImpl implements VegetableDTOService{
 		
 		vegetables = vegetableDTODao.findByType(category);
 		
-		if(vegetables==null) {
+		if(vegetables.isEmpty()) {
 			throw new VegetableException("No vegetables in database");
 		}
 		
@@ -185,7 +185,7 @@ public class VegetableDTOServiceImpl implements VegetableDTOService{
 		
 		vegetables = vegetableDTODao.findByName(name);
 		
-		if(vegetables==null) {
+		if(vegetables.isEmpty()) {
 			throw new VegetableException("No vegetables in database");
 		}
 		
